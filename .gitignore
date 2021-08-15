@@ -5,7 +5,9 @@ __pycache__/
 
 # C extensions
 *.so
-
+sent_emails/
+static/
+ingredients.csv
 # Distribution / packaging
 .Python
 build/
@@ -128,5 +130,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# .idea
-.idea
+/.idea
+api
+media
