@@ -38,24 +38,6 @@ class RecipeForm(forms.ModelForm):
             raise forms.ValidationError('Добавьте ингредиент')
         return ingredients_clean
 
-    def clean_title(self):
-        data = self.cleaned_data['title']
-        if not data:
-            raise forms.ValidationError('Добавьте название рецепта')
-        return data
-
-    def clean_description(self):
-        data = self.cleaned_data['description']
-        if not data:
-            raise forms.ValidationError('Добавьте описание рецепта')
-        return data
-
-    def clean_tags(self):
-        data = self.cleaned_data['tags']
-        if not data:
-            raise forms.ValidationError('Добавьте тег')
-        return data
-
     def save(self, commit=True):
         instance = super().save(commit=False)
         instance.author = self.initial['author']

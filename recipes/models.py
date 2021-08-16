@@ -40,23 +40,27 @@ class Follow(models.Model):
         db_table = 'posts_follow'
         verbose_name_plural = 'Подписки'
         verbose_name = 'Подписки'
-        constraints = [models.UniqueConstraint(fields=["user", "author"],
-                                               name="follow_unique")]
+        constraints = [models.UniqueConstraint(fields=['user', 'author'],
+                                               name='follow_unique')]
 
     def __str__(self):
         return f'{self.author}'
 
 
 class Recipe(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE,
-                               related_name='recipes')
-    title = models.CharField(max_length=50)
+    author = models.ForeignKey(
+        User,
+        verbose_name='Автор',
+        on_delete=models.CASCADE,
+        related_name='recipes')
+    title = models.CharField(verbose_name='Название рецепта', max_length=50)
     image = models.ImageField(upload_to='recipes/', blank=True, null=True)
-    description = models.TextField()
+    description = models.TextField(verbose_name='Описание')
     ingredients = models.ManyToManyField(Product, through='Ingredient',
                                          related_name='recipes', blank=True)
-    tags = models.ManyToManyField(Tag, blank=True, related_name='recipes')
-    time = models.PositiveIntegerField()
+    tags = models.ManyToManyField(
+        Tag, verbose_name='Тэги', blank=True, related_name='recipes')
+    time = models.PositiveIntegerField(verbose_name='Время приготовления')
     pub_date = models.DateTimeField('Дата публикации', auto_now_add=True)
     favorite_by = models.ManyToManyField(User, through='Favourite',
                                          related_name='favorite_recipes',
@@ -83,8 +87,8 @@ class Ingredient(models.Model):
         verbose_name_plural = 'Продукты'
         verbose_name = 'Продукты'
         constraints = [models.UniqueConstraint(
-            fields=["ingredient", "amount", 'recipe'],
-            name="ingredient_unique")]
+            fields=['ingredient', 'amount', 'recipe'],
+            name='ingredient_unique')]
 
     def __str__(self):
         return f'{self.amount}'
@@ -93,12 +97,16 @@ class Ingredient(models.Model):
 class Favourite(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    created = models.DateTimeField('date published', auto_now_add=True)
+    created = models.DateTimeField(
+        verbose_name='Дата публикации', auto_now_add=True)
 
     class Meta:
         ordering = ['-created']
         verbose_name_plural = 'Избранное'
         verbose_name = 'Избранное'
+        constraints = [models.UniqueConstraint(
+            fields=['user', 'recipe', 'created'],
+            name='favourite_unique')]
 
     def __str__(self):
         return f'{self.recipe}'
@@ -107,12 +115,16 @@ class Favourite(models.Model):
 class ShopList(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    created = models.DateTimeField('date of creation', auto_now_add=True)
+    created = models.DateTimeField(
+        verbose_name='Дата создания', auto_now_add=True)
 
     class Meta:
         ordering = ['-created']
         verbose_name_plural = 'Список покупок'
         verbose_name = 'Список покупок'
+        constraints = [models.UniqueConstraint(
+            fields=['user', 'recipe', 'created'],
+            name='shoplist_unique')]
 
     def __str__(self):
         return f'{self.recipe}'

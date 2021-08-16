@@ -82,10 +82,10 @@ def follow_index(request):
     page_number = request.GET.get("page")
     page = paginator.get_page(page_number)
     return render(request,
-                  "recipes/follow.html",
-                  {"page": page,
-                   "paginator": paginator,
-                   "page_number": page_number})
+                  'recipes/follow.html',
+                  {'page': page,
+                   'paginator': paginator,
+                   'page_number': page_number})
 
 
 @login_required(login_url='auth/login/')
@@ -181,7 +181,7 @@ def delete_favorite(request, recipe_id):
 def purchases(request):
     user = request.user
     recipes = user.shop_list.all()
-    return render(request, "recipes/purchases.html", {"page": recipes})
+    return render(request, 'recipes/purchases.html', {'page': recipes})
 
 
 @login_required(login_url='auth/login/')
@@ -244,7 +244,7 @@ def edit_recipe(request, recipe_id):
     form = RecipeForm(request.POST or None, files=request.FILES or None,
                       instance=recipe, initial={'author': request.user})
     tags = recipe.tags.all()
-    ingredients = Ingredient.objects.filter(recipe=recipe).all()
+    ingredients = Ingredient.objects.filter(recipe=recipe)
     context = {'form': form,
                'is_created': True,
                'recipe_id': recipe.id,
@@ -268,7 +268,7 @@ def delete_recipe(request, recipe_id):
 @login_required
 def download_pdf(request):
     reportlab.rl_config.TTFSearchPath.append(
-        str(settings.BASE_DIR) + "/Library/Fonts/"
+        str(settings.BASE_DIR) + '/Library/Fonts/'
     )
     user = get_object_or_404(User, username=request.user)
     ing_dict = {}
@@ -285,10 +285,10 @@ def download_pdf(request):
                 ing_dict[name] = [count, dimension]
             else:
                 ing_dict[name][0] += count
-    response = HttpResponse(content_type="application/pdf")
+    response = HttpResponse(content_type='application/pdf')
     response["Content-Disposition"] = 'attachment; filename="shopList.pdf"'
     p = canvas.Canvas(response, pagesize=A4)
-    pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
+    pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
     p.setFont("Arial", 20)
     x = 50
     y = 750
@@ -296,7 +296,7 @@ def download_pdf(request):
         if y <= 100:
             y = 700
             p.showPage()
-            p.setFont("Arial", 20)
+            p.setFont('Arial', 20)
         p.drawString(
             x, y, f"№{num + 1}: {el} - {ing_dict[el][0]} {ing_dict[el][1]}"
         )
