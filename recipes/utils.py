@@ -1,24 +1,9 @@
 from django import template
 from django.shortcuts import get_object_or_404
 
-from .models import Follow, Ingredient, Product, Recipe
+from .models import Ingredient, Product
 
 register = template.Library()
-
-
-@register.filter
-def extend_context(context, user):
-    context['purchase_list'] = Recipe.objects.filter(purchase_by=user)
-    context['favorites'] = Recipe.objects.filter(favorite_by=user)
-    return context
-
-
-@register.filter(name='add_subscription_status')
-def add_subscription_status(context, user, author):
-    context['is_subscribed'] = Follow.objects.filter(
-        user=user, author=author
-    ).exists()
-    return context
 
 
 def tag_filter(model, tags):
