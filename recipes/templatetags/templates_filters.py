@@ -18,3 +18,4 @@ def add_subscription_status(context, user, author):
         user=user, author=author
     ).exists()
     return context
+    

@@ -19,7 +19,7 @@ from foodgram.settings import PAGINATE_BY
 from .forms import RecipeForm
 from .models import (Favourite, Follow, Ingredient, Product, Recipe, ShopList,
                      Tag, User)
-from .utils import add_subscription_status, extend_context, tag_filter
+from .utils import tag_filter
 
 
 @require_GET
@@ -34,10 +34,6 @@ def index(request):
         'page': page,
         'paginator': paginator
     }
-    user = request.user
-    if user.is_authenticated:
-        context['active'] = 'recipe'
-        extend_context(context, user)
     return render(request, 'index.html', context)
 
 
@@ -47,10 +43,6 @@ def recipe_detail(request, recipe_id):
     context = {
         'recipe': recipe,
     }
-    user = request.user
-    if user.is_authenticated:
-        add_subscription_status(context, user, recipe.author)
-        extend_context(context, user)
     return render(request, 'recipes/recipe_detail.html', context)
 
 
@@ -68,10 +60,6 @@ def profile(request, user_id):
         'page': page,
         'paginator': paginator
     }
-    user = request.user
-    if user.is_authenticated:
-        add_subscription_status(context, user, author)
-        extend_context(context, user)
     return render(request, 'recipes/profile.html', context)
 
 

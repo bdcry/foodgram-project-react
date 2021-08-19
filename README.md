@@ -11,4 +11,9 @@
 
 Выгрузить данные из файла csv:
 
-      $ docker-compose exec web python manage.py import_csv
+      $ docker-compose exec -it <CONTAINER ID> python manage.py import_csv
+
+
+---
+
+я может что-то не так делаю, но у меня все работает при запуске.
