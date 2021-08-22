@@ -1,4 +1,4 @@
-name: Django-app workflow
+name: foodgram-workflow
 
 on: [push]
 
@@ -72,4 +72,4 @@ jobs:
           to: ${{ secrets.TELEGRAM_TO }}
           token: ${{ secrets.TELEGRAM_TOKEN }}
           message: >
-            ${{ github.workflow }} workflow успешно выполнен!
+            ${{ github.workflow }}  успешно выполнен!
