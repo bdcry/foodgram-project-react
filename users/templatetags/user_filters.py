@@ -3,10 +3,10 @@ from django import template
 register = template.Library()
 
 TAGS = {
-        'breakfast': 'orange',
-        'lunch': 'green',
-        'dinner': 'purple'
-    }
+    'breakfast': 'orange',
+    'lunch': 'green',
+    'dinner': 'purple'
+}
 
 
 @register.filter
