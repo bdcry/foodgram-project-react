@@ -114,14 +114,14 @@ def favorite_index(request):
     recipe_lists = user.favorite_recipes.all()
     if tags:
         recipe_list = recipe_lists.prefetch_related(
-                'author', 'tags'
-            ).filter(
-                tags__slug__in=tags
-            ).distinct()
+            'author', 'tags'
+        ).filter(
+            tags__slug__in=tags
+        ).distinct()
     else:
         recipe_list = recipe_lists.prefetch_related(
-                'author', 'tags'
-            ).all()
+            'author', 'tags'
+        ).all()
     paginator = Paginator(recipe_list, PAGINATE_BY)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
