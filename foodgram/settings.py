@@ -6,7 +6,8 @@ SECRET_KEY = 'c2wz9r6jnj#n&qz@q@d0o=3v71zj0uy-b0pdg9nn1uv*%e_ljl'
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['130.193.41.213', 'localhost',] 
+
+ALLOWED_HOSTS = ['130.193.41.213', 'localhost', ]
 
 
 INSTALLED_APPS = [
@@ -51,7 +52,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
-
 
 
 DATABASES = {
