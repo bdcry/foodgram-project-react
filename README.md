@@ -14,4 +14,4 @@
       $ docker-compose exec -it <CONTAINER ID> python manage.py import_csv
 
 IP: http://130.193.41.213
-админка: Tim pw: 0906
+админка: Tim psw: 0906
