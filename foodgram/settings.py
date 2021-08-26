@@ -4,10 +4,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'c2wz9r6jnj#n&qz@q@d0o=3v71zj0uy-b0pdg9nn1uv*%e_ljl'
 
-DEBUG = False
+DEBUG = True
 
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '130.193.41.213']
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
@@ -60,7 +60,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': '0906',
-        'HOST': 'localhost',
+        'HOST': 'db',
         'PORT': '5432',
     }
 }
