@@ -13,4 +13,3 @@
 
       $ docker-compose exec -it <CONTAINER ID> python manage.py import_csv
 
-ada
