@@ -212,11 +212,11 @@ def delete_purchase(request, recipe_id):
     purchase.delete()
     return JsonResponse(data)
 
-
+@require_GET
 def get_ingredients(request):
     query = unquote(request.GET.get('query'))
     data = list(Product.objects.filter(
-        title__startswith=query
+        title__istartswith=query
     ).values(
         'title', 'unit'))
     return JsonResponse(data, safe=False)
