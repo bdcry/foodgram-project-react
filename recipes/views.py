@@ -19,7 +19,7 @@ from foodgram.settings import PAGINATE_BY
 from .forms import RecipeForm
 from .models import (Favourite, Follow, Ingredient, Product, Recipe, ShopList,
                      Tag, User)
-from .utils import extend_context, tag_filter
+from .utils import add_subscription_status, extend_context, tag_filter
 
 
 @require_GET
@@ -47,6 +47,10 @@ def recipe_detail(request, recipe_id):
     context = {
         'recipe': recipe,
     }
+    user = request.user
+    if user.is_authenticated:
+        add_subscription_status(context, user, recipe.author)
+        extend_context(context, user)
     return render(request, 'recipes/recipe_detail.html', context)
 
 
@@ -64,6 +68,10 @@ def profile(request, user_id):
         'page': page,
         'paginator': paginator
     }
+    user = request.user
+    if user.is_authenticated:
+        add_subscription_status(context, user, author)
+        extend_context(context, user)
     return render(request, 'recipes/profile.html', context)
 
 
@@ -74,10 +82,10 @@ def follow_index(request):
     page_number = request.GET.get("page")
     page = paginator.get_page(page_number)
     return render(request,
-                  'recipes/follow.html',
-                  {'page': page,
-                   'paginator': paginator,
-                   'page_number': page_number})
+                  "recipes/follow.html",
+                  {"page": page,
+                   "paginator": paginator,
+                   "page_number": page_number})
 
 
 @login_required(login_url='auth/login/')
@@ -118,14 +126,14 @@ def favorite_index(request):
     recipe_lists = user.favorite_recipes.all()
     if tags:
         recipe_list = recipe_lists.prefetch_related(
-            'author', 'tags'
-        ).filter(
-            tags__slug__in=tags
-        ).distinct()
+                'author', 'tags'
+            ).filter(
+                tags__slug__in=tags
+            ).distinct()
     else:
         recipe_list = recipe_lists.prefetch_related(
-            'author', 'tags'
-        ).all()
+                'author', 'tags'
+            ).all()
     paginator = Paginator(recipe_list, PAGINATE_BY)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -134,6 +142,8 @@ def favorite_index(request):
         'page': page,
         'paginator': paginator
     }
+    if user.is_authenticated:
+        extend_context(context, user)
     return render(request, 'recipes/favorites.html', context)
 
 
@@ -171,7 +181,7 @@ def delete_favorite(request, recipe_id):
 def purchases(request):
     user = request.user
     recipes = user.shop_list.all()
-    return render(request, 'recipes/purchases.html', {'page': recipes})
+    return render(request, "recipes/purchases.html", {"page": recipes})
 
 
 @login_required(login_url='auth/login/')
@@ -234,7 +244,7 @@ def edit_recipe(request, recipe_id):
     form = RecipeForm(request.POST or None, files=request.FILES or None,
                       instance=recipe, initial={'author': request.user})
     tags = recipe.tags.all()
-    ingredients = Ingredient.objects.filter(recipe=recipe)
+    ingredients = Ingredient.objects.filter(recipe=recipe).all()
     context = {'form': form,
                'is_created': True,
                'recipe_id': recipe.id,
@@ -258,7 +268,7 @@ def delete_recipe(request, recipe_id):
 @login_required
 def download_pdf(request):
     reportlab.rl_config.TTFSearchPath.append(
-        str(settings.BASE_DIR) + '/Library/Fonts/'
+        str(settings.BASE_DIR) + "/Library/Fonts/"
     )
     user = get_object_or_404(User, username=request.user)
     ing_dict = {}
@@ -275,10 +285,10 @@ def download_pdf(request):
                 ing_dict[name] = [count, dimension]
             else:
                 ing_dict[name][0] += count
-    response = HttpResponse(content_type='application/pdf')
+    response = HttpResponse(content_type="application/pdf")
     response["Content-Disposition"] = 'attachment; filename="shopList.pdf"'
     p = canvas.Canvas(response, pagesize=A4)
-    pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
+    pdfmetrics.registerFont(TTFont("Arial", "arial.ttf"))
     p.setFont("Arial", 20)
     x = 50
     y = 750
@@ -286,7 +296,7 @@ def download_pdf(request):
         if y <= 100:
             y = 700
             p.showPage()
-            p.setFont('Arial', 20)
+            p.setFont("Arial", 20)
         p.drawString(
             x, y, f"№{num + 1}: {el} - {ing_dict[el][0]} {ing_dict[el][1]}"
         )
