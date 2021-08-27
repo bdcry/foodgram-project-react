@@ -126,13 +126,14 @@ def favorite_index(request):
     recipe_lists = user.favorite_recipes.all()
     if tags:
         recipe_list = recipe_lists.prefetch_related(
-            'author', 'tags').filter(
-            tags__slug__in=tags
-        ).distinct()
+                'author', 'tags'
+            ).filter(
+                tags__slug__in=tags
+            ).distinct()
     else:
         recipe_list = recipe_lists.prefetch_related(
-            'author', 'tags'
-        ).all()
+                'author', 'tags'
+            ).all()
     paginator = Paginator(recipe_list, PAGINATE_BY)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -213,11 +214,12 @@ def delete_purchase(request, recipe_id):
     return JsonResponse(data)
 
 
+@login_required(login_url='auth/login/')
 @require_GET
 def get_ingredients(request):
     query = unquote(request.GET.get('query'))
     data = list(Product.objects.filter(
-        title__istartswith=query
+        title__startswith=query
     ).values(
         'title', 'unit'))
     return JsonResponse(data, safe=False)
