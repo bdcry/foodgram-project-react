@@ -213,7 +213,6 @@ def delete_purchase(request, recipe_id):
     return JsonResponse(data)
 
 
-@login_required(login_url='auth/login/')
 @require_GET
 def get_ingredients(request):
     query = unquote(request.GET.get('query'))
