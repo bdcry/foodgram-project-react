@@ -212,6 +212,7 @@ def delete_purchase(request, recipe_id):
     purchase.delete()
     return JsonResponse(data)
 
+
 @require_GET
 def get_ingredients(request):
     query = unquote(request.GET.get('query'))
