@@ -19,14 +19,14 @@ def add_subscription_status(context, user, author):
 def tag_filter(model, tags):
     if tags:
         return model.objects.prefetch_related(
-                'author', 'tags'
-            ).filter(
-                tags__slug__in=tags
-            ).distinct()
+            'author', 'tags'
+        ).filter(
+            tags__slug__in=tags
+        ).distinct()
     else:
         return model.objects.prefetch_related(
-                'author', 'tags'
-            ).all()
+            'author', 'tags'
+        ).all()
 
 
 def get_ingredients_from_form(ingredients, recipe):
