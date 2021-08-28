@@ -15,7 +15,7 @@ services:
     ports:
      - "5432:5432"
   web:
-    image: bdcry/foodgram:latest
+    image: bdcry/foodgram
     restart: always
     volumes:
       - static_volume:/code/static/
