@@ -16,7 +16,7 @@
             {% load thumbnail user_filters %}
             <div class="card-user" data-author="{{ card.author.id }}">
                 <div class="card-user__header">
-                    <h2 class="card-user__title">{% if card.author.get_full_name %}{{ card.author.get_full_name }}{% else %} {{card.author}} {% endif %}</h2>
+                    <h2 class="card-user__title"> <a href="{% url 'profile' user_id=card.author.id %}">{% if card.author.get_full_name %}{{ card.author.get_full_name }}{% else %} {{card.author}} {% endif %}</a></h2>
                 </div>
                 <div class="card-user__body">
                     <ul class="card-user__items">

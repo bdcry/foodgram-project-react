@@ -66,6 +66,7 @@ DATABASES = {
 }
 
 
+
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -105,6 +106,7 @@ LOGIN_URL = '/auth/login'
 LOGIN_REDIRECT_URL = 'index'
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_mails')
 
 PAGINATE_BY = 6
