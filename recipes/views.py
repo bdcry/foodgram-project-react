@@ -236,6 +236,7 @@ def new_recipe(request):
     return render(request, 'recipes/recipe_new.html', {'form': form})
 
 
+
 @login_required(login_url='/auth/login/')
 def edit_recipe(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)

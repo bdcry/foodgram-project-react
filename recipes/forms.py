@@ -22,6 +22,7 @@ class RecipeForm(forms.ModelForm):
         ingredient_units = self.data.getlist('unitsIngredient')
         ingredient_amounts = self.data.getlist('valueIngredient')
         ingredients_clean = []
+        counts = 0
         for ingredient in zip(ingredient_names, ingredient_units,
                               ingredient_amounts):
             if int(ingredient[2]) < 0:
@@ -34,6 +35,12 @@ class RecipeForm(forms.ModelForm):
                 ingredients_clean.append({'title': ingredient[0],
                                           'unit': ingredient[1],
                                           'amount': ingredient[2]})
+        for ing_dict in ingredients_clean:
+            if ingredient_names[0] in ing_dict.values():
+                counts += 1
+            if counts > 1:
+                raise forms.ValidationError('Не должно быть одинаковых ингредиентов. '
+                                            'При необходимости добавьте количество нужного вам ингредиента')
         if not ingredients_clean:
             raise forms.ValidationError('Добавьте ингредиент')
         return ingredients_clean

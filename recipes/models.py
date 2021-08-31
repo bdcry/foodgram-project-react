@@ -83,6 +83,7 @@ class Ingredient(models.Model):
         verbose_name_plural = 'Продукты'
         verbose_name = 'Продукты'
 
+
     def __str__(self):
         return f'{self.amount}'
 
