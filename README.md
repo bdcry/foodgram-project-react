@@ -12,6 +12,3 @@
 Выгрузить данные из файла csv:
 
       $ docker-compose exec web python manage.py import_csv
-
-IP: http://130.193.41.213
-
